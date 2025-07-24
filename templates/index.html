@@ -1,27 +1,54 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Mini CRM - Contacts</title>
+  <meta charset="UTF-8">
+  <title>CRM - Liste des contacts</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Liste des contacts</h1>
 
-    <ul>
-        {% for contact in contacts %}
-            <li>
-                <strong>{{ contact.name }}</strong> – 
-                {{ contact.email }} ({{ contact.company or "Sans entreprise" }})
-            </li>
-        {% endfor %}
-    </ul>
+  <h1>Liste des contacts</h1>
 
-    <h2>Ajouter un contact</h2>
-    <form method="POST" action="/add">
-        <input type="text" name="name" placeholder="Nom" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="company" placeholder="Entreprise">
-        <button type="submit">Ajouter</button>
-    </form>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Entreprise</th>
+        <th>Téléphone</th>
+        <th>Dernier contact</th>
+        <th>Next steps</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for contact in contacts %}
+      <tr>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.email }}</td>
+        <td>{{ contact.company }}</td>
+        <td>{{ contact.phone }}</td>
+        <td>{{ contact.last_contact }}</td>
+        <td>{{ contact.next_steps }}</td>
+        <td>
+          <a href="/edit/{{ contact.id }}">Modifier</a> |
+          <a href="/delete/{{ contact.id }}" onclick="return confirm('Supprimer ce contact ?')">Supprimer</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Ajouter un contact</h2>
+  <form method="POST" action="/add">
+    <input type="text" name="name" placeholder="Nom" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="company" placeholder="Entreprise">
+    <input type="text" name="phone" placeholder="Téléphone">
+    <input type="text" name="last_contact" placeholder="Dernier contact">
+    <input type="text" name="next_steps" placeholder="Next steps">
+    <button type="submit">Ajouter</button>
+  </form>
+
 </body>
 </html>
